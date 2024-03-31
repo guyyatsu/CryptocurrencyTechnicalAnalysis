@@ -4,6 +4,8 @@ from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.requests import CryptoBarsRequest
 from alpaca.data.timeframe import TimeFrame
 
+from pandas import read_sql_query as querysql
+
 from datetime import datetime, timedelta
 from decouple import config
 from datetime import datetime
@@ -41,6 +43,13 @@ for entry in HistoricPerformanceBars().data:
          ), entry.high, entry.low,
             entry.open, entry.close     )
     )
+
+dataframe = querysql("""
+    SELECT * FROM historic_price_data
+    ORDER BY epoch DESC
+    LIMIT 100;""", connection
+)
+
 
 connection.commit()
 connection.close()
