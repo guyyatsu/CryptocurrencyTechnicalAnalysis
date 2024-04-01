@@ -11,8 +11,9 @@ from sqlite3                import connect
 
 
 class HistoricPerformanceBars:
-    def __init__( self ):
-        yestermorrow = datetime.now() - timedelta(days=3)
+    def __init__( self, days: int=3,
+    ):
+        yestermorrow = datetime.now() - timedelta(days=days)
         bar = CryptoHistoricalDataClient().get_crypto_bars(
             CryptoBarsRequest( symbol_or_symbols=["BTC/USD"],
                                timeframe=TimeFrame.Minute,
