@@ -15,8 +15,24 @@ If we ignore `USD Coin` and `USD Tether` (because they're trash anyways) then we
 **pretty much assume** that we can only buy assets directly, as opposed to trading eachother.
 
 
+### Database Layout
+The `finance.db` file located within the project root consist of two tables for tracking two different
+sources of information; `historic_performance_data` and `live_transaction_ledger`, where the former
+keeps a back log of the quoted price at any given moment up to so many minutes ago and the latter
+tracks successful transactions as they happen.
 
-### Data-Points tracked by `Alpaca-Py`:
+#### Historic Performance Data
+| Symbol    | Epoch       | High     | Low      | Open     | Close    |
+| --------- | ----------- | -------- | -------- | -------- | -------- |
+| `BTC/USD` | 10202938.43 | 47632.23 | 46473.34 | 45765.44 | 48754.69 |
+
+#### Live Transaction Ledger
+| Symbol    | Epoch       | Ask Price | Ask Size | Bid Price | Bid Size |
+| --------- | ----------- | --------- | -------- | --------- | -------- |
+| `BTC/USD` | 57438994.99 | 57438.94  | 0.94     | 56473.33  | 0.89     |
+
+
+### Data-Points tracked by the Historic client:
 - `id`: Unique UUID identifier for machine-readable assets.
 - `asset_class`: Assets could either be `CRYPTO` or `STOCKS`;.
 - `exchange`: Could either be the `STOCK` exchange or the `CRYPTO` exchange.
