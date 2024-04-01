@@ -1,25 +1,13 @@
 #!/bin/python3
-from alpaca.trading.client import TradingClient
+from alpaca.trading.client  import TradingClient
 from alpaca.data.historical import CryptoHistoricalDataClient
-from alpaca.data.requests import CryptoBarsRequest
-from alpaca.data.timeframe import TimeFrame
+from alpaca.data.requests   import CryptoBarsRequest
+from alpaca.data.timeframe  import TimeFrame
+from pandas                 import read_sql_query as querysql
+from datetime               import datetime
+from datetime               import timedelta
+from sqlite3                import connect
 
-from pandas import read_sql_query as querysql
-
-from datetime import datetime, timedelta
-from decouple import config
-from datetime import datetime
-
-from sqlite3 import connect
-
-
-""" Constants Definition """
-# Import Alpaca API credentials.
-key = config("ALPACA_KEY")
-secret = config("ALPACA_SECRET")
-database = "/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
-connection = connect(database)
-cursor = connection.cursor()
 
 
 class HistoricPerformanceBars:
