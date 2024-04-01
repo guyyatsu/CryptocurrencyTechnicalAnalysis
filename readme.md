@@ -1,6 +1,7 @@
 # Technical Analysis of Cryptocyrrency Trading Pairs
 
 
+## Step One: Data.
 Cryptocurrency moves faster than securities, and so we don't need to collect a lot of high-resolution
 data in order to make an accurate prediction.  In fact, if we _are_ going for a high granularity then
 I'd say a week at most of every minute would provide a solid enough foundation of information upon
@@ -65,3 +66,6 @@ tracks successful transactions as they happen.
 - `tape`:
 
 
+## Step Two: Analysis.
+## Step Three: Decision.
+## Step Four: Action.
