@@ -50,5 +50,4 @@ tracks successful transactions as they happen.
 - `maintenance_margin_requirement`
 - `attributes`
 
-## Database Table Layout.
-## Collect and Rotate Bar Data.
+
