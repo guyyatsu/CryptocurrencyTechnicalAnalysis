@@ -12,7 +12,13 @@ from sqlite3                import connect
 
 class HistoricPerformanceBars:
     def __init__( self, days: int=3,
+                  database: str="/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
     ):
+
+        # Make database connection and cursor.
+        self.database = connect(database)
+        self.cursor = self.database\
+                          .cursor()
         yestermorrow = datetime.now() - timedelta(days=days)
         bar = CryptoHistoricalDataClient().get_crypto_bars(
             CryptoBarsRequest( symbol_or_symbols=["BTC/USD"],
