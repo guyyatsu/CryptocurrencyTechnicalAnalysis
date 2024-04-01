@@ -28,16 +28,17 @@ class HistoricPerformanceBars:
         ); bar.df
         self.data = bar["BTC/USD"]
 
-
-for entry in HistoricPerformanceBars().data:
-    cursor.execute("""
-        INSERT OR IGNORE INTO historic_price_data(symbol, epoch, _high, _low, _open, _close)
-        VALUES(?, ?, ?, ?, ?, ?); """,
-        ( "BTC/USD", datetime.timestamp(
-            entry.timestamp
-         ), entry.high, entry.low,
-            entry.open, entry.close     )
-    )
+        for entry in self.data:
+            cursor.execute("""
+                INSERT OR IGNORE INTO historic_price_data(
+                    symbol, epoch, _high, _low, _open, _close
+                )
+                VALUES( ?, ?, ?, ?, ?, ? ); """,
+                ( "BTC/USD", datetime.timestamp(
+                    entry.timestamp
+                 ), entry.high, entry.low,
+                    entry.open, entry.close     )
+            ); connection.commit()
 
 dataframe = querysql("""
     SELECT * FROM historic_price_data
