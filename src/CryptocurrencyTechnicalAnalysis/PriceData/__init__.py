@@ -79,3 +79,14 @@ class HistoricPerformanceBars:
             LIMIT 120;""", self.database
         )
 
+class LiveTransactionLedger:
+    def __init__(self, key, secret):
+
+        # asynchronous object handler.
+        async def _handler(data):
+            print(data)
+
+        stream = CryptoDataStream(key, secret)
+        stream.subscribe_quotes( _handler,
+                                 "BTC/USD" )
+        stream.run()
