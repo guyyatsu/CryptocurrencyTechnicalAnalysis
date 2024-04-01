@@ -1,9 +1,5 @@
 # Technical Analysis of Cryptocyrrency Trading Pairs
-- [Curate Data](#step-one-curate-a-dataset)
-  1. [Identify Currency Pairs](#database-table-layout)
-- Interpret Data
 
-## Step One: Curate a Dataset.
 
 Cryptocurrency moves faster than securities, and so we don't need to collect a lot of high-resolution
 data in order to make an accurate prediction.  In fact, if we _are_ going for a high granularity then
