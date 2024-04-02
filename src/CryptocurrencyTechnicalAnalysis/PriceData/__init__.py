@@ -91,11 +91,25 @@ class HistoricPerformanceBars:
 
 
 class LiveTransactionLedger:
-    def __init__(self, key, secret):
+    def __init__( self, key, secret,
+        database: str="/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
+    ):
+        self.database = database
 
         # asynchronous object handler.
         async def _handler(data):
-            print(data)
+            db = connect(db)
+            cursor = db.cursor()
+            cursor.execute("""
+                INSERT OR IGNORE INTO live_transaction_ledger(
+                    symbol, epoch, _ask_price, _ask_size, 
+                    _bid_price, _bid_size
+                )
+                VALUES( ?, ?, ?, ?, ?, ?);""",
+                ("BTC/USD", datetime.timestamp(data.timestamp),
+                data.ask_price, data.ask_size, data.bid_price, data.bid_size)
+            ); db.commit(); db.close()
+            
 
         stream = CryptoDataStream(key, secret)
         stream.subscribe_quotes( _handler,
