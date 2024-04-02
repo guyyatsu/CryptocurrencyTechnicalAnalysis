@@ -12,7 +12,7 @@ from sqlite3                import connect
 
 
 class HistoricPerformanceBars:
-    def __init__( self, days: int=3,
+    def __init__( self, days: int=7,
                   database: str="/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
     ):
         """ __  __ _             _       _         ____ _____ ____ 
@@ -44,33 +44,40 @@ class HistoricPerformanceBars:
         self.cursor = self.database\
                           .cursor()
 
-        # Set a certain amount of days back to collect data for;
-        # make an api request to collect the Bitcoin minutes from
-        # that span of time, then save it to memory as a dataframe.
-        yestermorrow = datetime.now() - timedelta(days=days)
-        bar = CryptoHistoricalDataClient().get_crypto_bars(
-            CryptoBarsRequest( symbol_or_symbols=["BTC/USD"],
-                               timeframe=TimeFrame.Minute,
-                               start=yestermorrow,
-                               end=datetime.now())
-        ); bar.df
-        
-        # Allow the results to be globally accessible.
-        self.data = bar["BTC/USD"]
+        def date_counter(days):
+            step, _list = 1, []
+            while step <= days:
+                _list.append(
+                    datetime.now() - timedelta(days=step)
+                ); step += 1
+            return _list
 
-        # Write the information we're looking for to the database.
-        # --Be sure to save our work ;)
-        for entry in self.data:
-            cursor.execute("""
-                INSERT OR IGNORE INTO historic_price_data(
-                    symbol, epoch, _high, _low, _open, _close
-                )
-                VALUES( ?, ?, ?, ?, ?, ? ); """,
-                ( "BTC/USD", datetime.timestamp(
-                    entry.timestamp
-                 ), entry.high, entry.low,
-                    entry.open, entry.close     )
-            ); connection.commit()
+        end = datetime.today()
+
+        for day in date_counter(days):
+            bar = CryptoHistoricalDataClient().get_crypto_bars(
+                CryptoBarsRequest( symbol_or_symbols=["BTC/USD"],
+                                   timeframe=TimeFrame.Minute,
+                                   start=day,
+                                   end=end)
+            ); end = day; bar.df
+        
+            # Allow the results to be globally accessible.
+            self.data = bar["BTC/USD"]
+
+            # Write the information we're looking for to the database.
+            # --Be sure to save our work ;)
+            for entry in self.data:
+                self.cursor.execute("""
+                    INSERT OR IGNORE INTO historic_price_data(
+                        symbol, epoch, _high, _low, _open, _close
+                    )
+                    VALUES( ?, ?, ?, ?, ?, ? ); """,
+                    ( "BTC/USD", datetime.timestamp(
+                        entry.timestamp
+                     ), entry.high, entry.low,
+                        entry.open, entry.close     )
+                ); self.database.commit()
 
         # Populate a dataframe with the most recent data.
         self.dataframe = querysql("""
