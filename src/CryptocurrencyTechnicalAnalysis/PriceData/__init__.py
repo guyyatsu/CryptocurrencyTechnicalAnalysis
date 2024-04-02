@@ -85,6 +85,10 @@ class HistoricPerformanceBars:
             ORDER BY epoch DESC
             LIMIT 120;""", self.database
         )
+        
+        self.database\
+            .close()
+
 
 class LiveTransactionLedger:
     def __init__(self, key, secret):
