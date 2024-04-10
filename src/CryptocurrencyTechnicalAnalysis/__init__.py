@@ -39,11 +39,13 @@ if __name__ == "__main__":
 
     args = arguments.parse_args()
 
-    #HistoricPerformanceBars(days=int(arguments.days))
 
-    dataframe = DataframeCuration(
-        arguments.database_file,
-    )
+basicConfig(filename=args.log_file, level=INFO)
 
-    indicators = TechnicalIndicators(dataframe)
-    trends = indicators.trends
+if args.historic_data is True:
+    days_end = datetime(args.year_end, args.month_end, args.day_end)
+    try: HistoricPerformanceBars(days=args.days, end=days_end)
+    except KeyboardInterrupt: exit()
+
+if args.technical_indicators is True:
+    TechnicalIndicators(DataframeCuration(default_db))
