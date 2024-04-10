@@ -37,7 +37,7 @@ if __name__ == "__main__":
     arguments.add_argument("-Me", "--month-end", type=int, default=default_start[1])
     arguments.add_argument("-De", "--day-end",   type=int, default=default_start[2])
 
-    arguments = arguments.parse_args()
+    args = arguments.parse_args()
 
     #HistoricPerformanceBars(days=int(arguments.days))
 
