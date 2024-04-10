@@ -14,32 +14,14 @@ if __name__ == "__main__":
 
     arguments = ArgumentParser()
 
-    ''' Common Arguments. '''
-    arguments.add_argument("-Db", "--database-file",
-        default="/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
-    )
-
-    arguments.add_argument( "-D",  "--days",
-        default=7, help=(
-            "Set the number of days back to pull data on."
-        )
-    )
-
-    arguments.add_argument( "-L",  "--logging",
-        action="store_true", help=(
-            "Enable logging for better runtime tracing."
-        )
-    )
-
-    arguments.add_argument( "-Lf", "--log-file",
-        default="/dev/null", help=(
-            f"Specify a filepath for logging to a file.  "
-            f"Defaults to `/dev/null`."
-        )
-    )
-
-
-    arguments.add_argument("-LT", "--live-transactions", action="store_true", default=False)
+    arguments.add_argument("-Lf", "--log-file", default=".log")
+    arguments.add_argument("-Db", "--database", default="/tmp/finance.db")
+    arguments.add_argument("-Hd", "--historic-data", action="store_true", default=False)
+    arguments.add_argument("-Ti", "--technical-indicators", action="store_true", default=False)
+    arguments.add_argument("-D", "--days", type=int, default=1)
+    arguments.add_argument("-Ye", "--year-end",  type=int, default=default_start[0])
+    arguments.add_argument("-Me", "--month-end", type=int, default=default_start[1])
+    arguments.add_argument("-De", "--day-end",   type=int, default=default_start[2])
 
     arguments = arguments.parse_args()
 
