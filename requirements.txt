@@ -1,2 +1,4 @@
 python-decouple
 cryptography
+alpaca-py
+pandas
