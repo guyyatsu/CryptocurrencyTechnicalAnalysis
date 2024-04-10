@@ -21,11 +21,14 @@ from logging                import getLogger
 from time                   import sleep
 
 
+_log = getLogger(__name__)
+log = lambda string: _log.info(string)
+
 timestamp = lambda: datetime.timestamp(datetime.now())
 default_db = "/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
 
 
-def date_counter(days):
+def date_counter(days, date):
     """
     Give a list of consecutive datetime objects
     going backwards from the current date.
@@ -33,7 +36,7 @@ def date_counter(days):
     step, _list = 1, []
     while step <= days:
         _list.append(
-            datetime.now() - timedelta(days=step)
+            date - timedelta(days=step)
         ); step += 1
     return _list
 
@@ -41,6 +44,7 @@ def date_counter(days):
 class HistoricPerformanceBars:
     def __init__( self,
         days: int=7,
+        end=datetime.now(),
         symbol: str="BTC/USD",
         database: str=default_db,
     ):
@@ -66,71 +70,40 @@ class HistoricPerformanceBars:
           -- Arguments:
             - days:     How many whole-days back tocollect data for.
             - database: Absolute filepath to an `sqlite3.db` file.
-        """
 
-        ''' Historic Data Request
-        The Chunk-Request Loop consists of two iterative actions nested
+            The Chunk-Request Loop consists of two iterative actions nested
         one within the other: for every *day we request all the minute-bars
         for that day, then for every minute within that day we write the
         symbol name, timestamp, high, low, open, and close to the HPD table
         within the designated SQLite3 datbase file.
         
-        To get started with iterating day-by-day first we establish today
+            To get started with iterating day-by-day first we establish today
         as the ending point; then request up to today - 1, conduct our db
         transactions, then replace the end with the current start and repeat
         the process on the day before until no more days have been counted out
         for us by the day_counter function.
-        '''
-        # Delimiter for buffering our requests.
-        end = datetime.today()
+        """
         database = connect(database)
 
         # Iterative chunk-collection.
-        for day in date_counter(days):
-
+        for day in date_counter(days, end):
+            
             # Formulate data request for the current range of dates.
+            log(f"{timestamp()}: Collecting minutes for {datetime.strftime(day, '%Y/%m/%d')}")
             bar = CryptoHistoricalDataClient().get_crypto_bars(
                 CryptoBarsRequest( symbol_or_symbols=[symbol],
                                    timeframe=TimeFrame.Minute,
                                    start=day,
                                    end=end)
-            )
+            ); log(f"{timestamp()}: Request retrieved; beginning write.")
 
             # Iterate through members of the day-chunk.
             for entry in bar[symbol]: WriteHistoricBars( database,
                                                          symbol,
-                                                         datetime.timestamp(
-                                                             entry.timestamp
-                                                         ),
+                                                         entry.timestamp,
                                                          entry.high, entry.low,
                                                          entry.open, entry.close )
+            
+            log(f"{timestamp()}: Write complete.  Begin next loop.\n\n")
             # Increment the step.
             end = day
-        database.close()
-
-
-class LiveTransactionLedger:
-    def __init__( self, key, secret,
-        database: str="/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
-    ):
-        self.database = database
-
-        # asynchronous object handler.
-        async def _handler(data):
-            db = connect(self.database)
-            cursor = db.cursor()
-            cursor.execute("""
-                INSERT OR IGNORE INTO live_transaction_ledger(
-                    symbol, epoch, _ask_price, _ask_size, 
-                    _bid_price, _bid_size
-                )
-                VALUES( ?, ?, ?, ?, ?, ?);""",
-                ("BTC/USD", datetime.timestamp(data.timestamp),
-                data.ask_price, data.ask_size, data.bid_price, data.bid_size)
-            ); db.commit(); db.close(); sleep(.5)
-            
-
-        stream = CryptoDataStream(key, secret)
-        stream.subscribe_quotes( _handler,
-                                 "BTC/USD" )
-        stream.run()
