@@ -7,8 +7,18 @@ from PriceData          import LiveTransactionLedger
 from DatabaseOperations import DataframeCuration
 from TechnicalAnalysis  import TechnicalIndicators
 from argparse           import ArgumentParser
-from decouple           import config
 
+
+default_db = "/home/guyyatsu/.local/finance.db"
+
+
+# List out the Year Month and Day for todays date as a default fallback.
+default_start = [
+    int(number) for number in \
+        datetime.strftime( datetime.now(),
+                           "%Y %-m %-d"     )\
+                .split()
+]
 
 if __name__ == "__main__":
 
