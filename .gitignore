@@ -1,8 +1,15 @@
 bin/
+bin/*
 etc/
+etc/*
 include/
+include/*
 lib/
+lib/*
 lib64
 lib64/
+lib64/*
 share/
+share/*
 pyvenv.cfg
+*/**/*.pyc
