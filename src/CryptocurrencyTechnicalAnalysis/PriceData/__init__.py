@@ -11,6 +11,7 @@ from alpaca.data.requests   import CryptoBarsRequest
 from alpaca.data.timeframe  import TimeFrame
 
 """ In-House Imports """
+from _tools import date_counter
 from DatabaseOperations     import WriteHistoricBars
 
 """ Built-In Imports """
@@ -27,18 +28,6 @@ log = lambda string: _log.info(string)
 timestamp = lambda: datetime.timestamp(datetime.now())
 default_db = "/home/library/software/CryptocurrencyTechnicalAnalysis/finance.db"
 
-
-def date_counter(days, date):
-    """
-    Give a list of consecutive datetime objects
-    going backwards from the current date.
-    """
-    step, _list = 1, []
-    while step <= days:
-        _list.append(
-            date - timedelta(days=step)
-        ); step += 1
-    return _list
 
 
 class HistoricPerformanceBars:
