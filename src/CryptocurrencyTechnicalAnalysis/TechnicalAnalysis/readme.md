@@ -3,12 +3,12 @@
 - [Simple Moving Average](https://www.investopedia.com/terms/s/sma.asp)
 
 ### Simple Moving Averages
-A moving average is the mean of a certain number of periods conducted over a series; it's used to determine
-if the trend on a graph is moving upwards or downwards, based on the direction it is currently moving.  The
-main draw to it being it's ability to "_remember_" larger periods of time so as to provide a moderately **unresponsive**
-demeanor when generating `buy` or `sell` signals.
+A moving average is the mean of a certain number of periods conducted over a serie, and serves as the basis for other more
+complex indicators.  
 
-The `SMA` algorithm can be used as the basis for other more complex algorithms based on comparisons between `shorter` and `longer`
-window-frames of periods to average together.
+The in-house implementation of the algorithm accepts the single argument `window_size`, which denotes how many periods to use
+for its calculation; defaulting to `3`, which it appends to the dataframe under the `SMA` header.
+
+For any calculations other than the default, the function adds them to the dataframe under the `{window_size}-Minute SMA` header.
 
 ![A flowchart diagram of the workflow behind the SMA algorithm.](https://raw.githubusercontent.com/guyyatsu/CryptocurrencyTechnicalAnalysis/master/screenshots/SimpleMovingAverages.jpg)
