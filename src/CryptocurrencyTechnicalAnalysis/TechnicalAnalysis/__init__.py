@@ -43,7 +43,7 @@ class TechnicalIndicators:
 
 
     def MovingAverageConvergenceDivergence(self):
-        dataframe = self.dataframe[::-1]
+        dataframe = self.dataframe
 
         # Calculate 12-period and 26-period exponential moving averages. 
         dataframe["EMA12"]  = dataframe["_close"].ewm(span=12, adjust=False).mean()
