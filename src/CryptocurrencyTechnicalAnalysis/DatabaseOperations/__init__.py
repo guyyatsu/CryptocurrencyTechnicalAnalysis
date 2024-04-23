@@ -18,9 +18,12 @@ def CreateDatabase(database):
 def ValidateUserCredentials(database, userpass):
     cursor = database.cursor()
     with open(f"{command_subdirectory}/ValidateUser.sql", "r") as sql:
-        cursor.executescript(sql.read(), userpass)
-"""    
-        
+def CreateNewUser(database, userpass, key, secret):
+    cursor = database.cursor()
+    with open(f"{command_subdirectory}/CreateUser.sql") as sql:
+        cursor.execute(sql.read, (userpass, key, secret))
+        database.commit()
+        del cursor
 
 
 def WriteHistoricBars(database, symbol, timestamp, _high, _low, _open, _close):
