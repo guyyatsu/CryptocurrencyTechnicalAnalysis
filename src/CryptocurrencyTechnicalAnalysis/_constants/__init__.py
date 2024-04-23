@@ -2,6 +2,14 @@
 from datetime import timedelta, datetime
 from Lab93CryptographyAPI import CryptogramAPI
 
+
+cryptogram = CryptogramAPI()
+SHA256   = lambda string: cryptogram.sha_256(string)
+BUILDKEY = lambda string: cryptogram.build_key(string)
+ENCRYPT = lambda target, phrase: cryptogram.encryption(target, phrase)
+DECRYPT = lambda target, phrase: cryptogram.decryption(target, phrase)
+
+
 # List out the Year Month and Day for todays date as a default fallback.
 default_start = [
     int(number) for number in \
