@@ -9,6 +9,10 @@ default_start = [
                            "%Y %-m %-d"     )\
                 .split()
 ]
+
+default_db = "finance.db"
+default_log = ".log"
+
 def date_counter(days, date):
     """
     Give a list of consecutive datetime objects
