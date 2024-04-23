@@ -13,11 +13,6 @@ from datetime           import timedelta
 from argparse           import ArgumentParser
 
 
-
-
-
-
-
 if __name__ == "__main__":
 
     arguments = ArgumentParser()
