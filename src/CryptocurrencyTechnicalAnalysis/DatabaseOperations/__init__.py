@@ -1,8 +1,7 @@
 from sqlite3 import connect
 from pandas import read_sql_query as querysql
-from _tools import command_subdirectory
+from _constants import sql_command_directory as command_subdirectory
 
-command_subdirectory = f'{"/".join( __file__.split("/")[0:-1])}/sql'
 
 
 def CreateDatabase(database):
