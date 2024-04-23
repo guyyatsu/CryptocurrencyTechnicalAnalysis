@@ -28,8 +28,8 @@ if __name__ == "__main__":
 
     arguments = ArgumentParser()
 
-    arguments.add_argument("-Lf", "--log-file", default=".log")
-    arguments.add_argument("-Db", "--database", default="/tmp/finance.db")
+    arguments.add_argument("-Lf", "--log-file", default=default_log)
+    arguments.add_argument("-Db", "--database", default=default_db)
     arguments.add_argument("-Hd", "--historic-data", action="store_true", default=False)
     arguments.add_argument("-Ti", "--technical-indicators", action="store_true", default=False)
     arguments.add_argument("-D", "--days", type=int, default=1)
